@@ -1,130 +1,146 @@
 import type { JSX } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { FinalCTA } from "@/components/site/FinalCTA";
+import { GalleryGrid } from "@/components/site/GalleryGrid";
+import { ClickableImage } from "@/components/site/ImageLightbox";
+import { NavLink } from "@/components/NavLink";
 import {
+  getAccentImages,
+  getMarketingHeroImage,
+  getServiceHeroImage,
+  type ServiceSlug,
+} from "@/lib/gallery-images";
+import {
+  areaLinks,
+  COMPANY_DESCRIPTION,
+  COMPANY_NAME,
   EMAIL_DISPLAY,
   EMAIL_HREF,
   PHONE_DISPLAY,
   PHONE_HREF,
-} from "@/components/site/SiteHeader";
-import { NavLink } from "@/components/NavLink";
-import heroTruck from "@/assets/hero-truck.jpg";
-import serviceWinch from "@/assets/service-winch.jpg";
-import serviceFlatbed from "@/assets/service-flatbed.jpg";
-import serviceHazard from "@/assets/service-hazard.jpg";
-import serviceFleet from "@/assets/service-fleet.jpg";
-import coverageMap from "@/assets/coverage-map.jpg";
-import { Phone, Shield, Clock, Truck, MapPin } from "lucide-react";
+  serviceLinks,
+} from "@/lib/site";
+import { Phone, Hammer, Clock, MapPin, Layers } from "lucide-react";
 
-const services = [
+const heroImage = getMarketingHeroImage(0);
+
+const featuredServices: {
+  id: string;
+  slug: ServiceSlug;
+  title: string;
+  blurb: string;
+  href: string;
+}[] = [
   {
     id: "01",
-    title: "Accident Recovery",
-    blurb:
-      "Precision extraction and secure transport for high-impact accident scenes. Direct insurance coordination.",
-    image: serviceWinch,
+    slug: "concrete-tearout",
+    title: "Tearout & Haul Off",
+    blurb: "Remove old concrete and clear the site for a clean, replace-ready pour.",
+    href: "/services/concrete-tearout",
   },
   {
     id: "02",
-    title: "Flatbed Towing",
-    blurb:
-      "Damage-free transport for luxury vehicles, SUVs, EVs, and heavy-duty trucks across the Wasatch Front.",
-    image: serviceFlatbed,
+    slug: "driveways",
+    title: "Driveways & Patios",
+    blurb: "Flatwork built for daily use — proper base, joints, and finishes for Utah weather.",
+    href: "/services/driveways",
   },
   {
     id: "03",
-    title: "Roadside Ops",
-    blurb:
-      "Rapid response for lockouts, jump-starts, tire changes, and fuel delivery in any of Utah'sweather conditions.",
-    image: serviceHazard,
+    slug: "sidewalks",
+    title: "Walks & Sidewalks",
+    blurb: "Safe, even paths and front walks that tie into your existing hardscape.",
+    href: "/services/sidewalks",
   },
   {
     id: "04",
-    title: "Fleet Transport",
-    blurb:
-      "Logistics and multi-vehicle relocation for commercial fleets and dealership inventory management.",
-    image: serviceFleet,
+    slug: "decorative-concrete",
+    title: "Decorative Concrete",
+    blurb: "Stamped, stained, and accent finishes on a solid structural pour.",
+    href: "/services/decorative-concrete",
   },
 ];
 
+const homeGalleryPreview = getAccentImages(6);
+
 const trustPoints = [
   {
-    icon: Shield,
-    title: "Licensed & Fully Insured",
-    body: "Certified operators handling every vehicle with industrial-grade precision and care.",
+    icon: Hammer,
+    title: "Experienced Crews",
+    body: "Skilled finishers focused on flatwork quality — placement, edges, and control joints done right.",
   },
   {
-    icon: Truck,
-    title: "Heavy-Duty Fleet",
-    body: "Equipped for Utah's toughest terrain and weather—snow, mud, or mountain passes.",
+    icon: Layers,
+    title: "Tearout Specialists",
+    body: "Concrete removal and haul off so you are not stuck managing debris before the new pour.",
   },
   {
     icon: Clock,
-    title: "Immediate Dispatch",
-    body: "Proprietary routing logic puts the closest unit to Salt Lake or Utah County en route first.",
+    title: "Reliable Scheduling",
+    body: "Clear communication on timing, weather, and cure windows — we respect your property and timeline.",
   },
 ];
 
 const testimonials = [
   {
     quote:
-      "Truck flipped on I-15 north of Lehi at 2 AM. Operator was on scene in 22 minutes, handled the recovery start to finish, dealt with my insurance directly. Genuine pros.",
-    name: "Marcus R.",
-    role: "Owner-Operator",
+      "They tore out our cracked driveway and poured new broom finish in one coordinated job. Straightforward estimate and the crew left the street clean.",
+    name: "James T.",
+    role: "Homeowner — Utah County",
   },
   {
     quote:
-      "We use Service Towing for our regional fleet. Their dispatch is the most responsive in Utah — they handle scheduled transports and emergencies with the same calm competence.",
-    name: "Dana K.",
-    role: "Logistics Manager",
+      "Needed an RV pad beside the shop — level, thick enough for our trailer, and finished on the day they promised.",
+    name: "Maria S.",
+    role: "Property Owner — Davis County",
   },
   {
     quote:
-      "Locked my keys in the car at the Sandy trailhead in a storm. They were there before I finished my coffee. Clean, fast, friendly.",
-    name: "Ben P.",
-    role: "Local Customer",
+      "Stamped patio turned out better than the sample board. They explained sealer maintenance up front so we knew what to expect.",
+    name: "Chris L.",
+    role: "Homeowner — Salt Lake County",
   },
 ];
 
 const faqs = [
   {
-    q: "What is your average response time?",
-    a: "We target under 30 minutes in metro Salt Lake and Utah counties. Dispatch always provides a live ETA before the unit rolls.",
+    q: "What areas do you serve?",
+    a: "Utah County, Salt Lake County, and Davis County. See each county page for representative cities, or call if you are nearby.",
   },
   {
-    q: "Do you work directly with insurance?",
-    a: "Yes. We provide complete documentation and direct-bill most major insurance providers for accident recovery and roadside work.",
+    q: "Do you handle concrete tearout?",
+    a: "Yes — tearout and haul off is a specialty. We remove old flatwork and leave the site ready for new concrete.",
   },
   {
-    q: "Can you tow electric vehicles?",
-    a: "Absolutely. Our flatbed fleet handles the unique weight distribution and manufacturer towing requirements of EVs including Tesla, Rivian, and Ford Lightning.",
+    q: "Do you pour basement foundations?",
+    a: "We focus on small footings and foundations for sheds, shops, and similar structures — not full basement foundation packages.",
   },
   {
-    q: "What areas do you cover?",
-    a: "All of Utah County and Salt Lake County — Provo, Orem, Lehi, Spanish Fork, Salt Lake City, West Valley, Sandy, Draper, and everything along the Wasatch Front.",
+    q: "How do I get an estimate?",
+    a: "Call (801) 599-9951 or use the contact form with your project address, approximate size, and photos if you have them.",
   },
   {
-    q: "Do you handle heavy-duty and commercial trucks?",
-    a: "Yes. Our heavy-duty wreckers are rated for semis, box trucks, and commercial fleet vehicles.",
+    q: "What finishes do you offer?",
+    a: "Standard broom and smooth finishes, plus decorative options including stamped and stained concrete on qualifying projects.",
   },
 ];
 
 export function HomePage(): JSX.Element {
   return (
     <SiteLayout>
-      {/* Hero */}
       <section className="relative overflow-hidden px-4 pt-20 pb-32">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={heroTruck}
-            alt="Heavy-duty flatbed tow truck on a Utah mountain highway at dusk"
-            width={1920}
-            height={1088}
-            className="h-full w-full object-cover opacity-40 grayscale"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/30" />
-        </div>
-
+        {heroImage ? (
+          <div className="absolute inset-0 z-0">
+            <img
+              src={heroImage.src}
+              alt={heroImage.alt}
+              className="h-full w-full object-cover opacity-35 grayscale"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40" />
+          </div>
+        ) : (
+          <div className="absolute inset-0 z-0 bg-gradient-to-br from-card/80 via-background to-background" />
+        )}
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="max-w-3xl animate-entrance">
             <div className="mb-6 inline-flex items-center gap-2 border border-primary/30 bg-primary/5 px-3 py-1">
@@ -133,17 +149,18 @@ export function HomePage(): JSX.Element {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
               </span>
               <span className="font-mono text-xs uppercase tracking-[0.2em] text-primary">
-                Salt Lake & Utah County Coverage
+                Utah · Salt Lake · Davis Counties
               </span>
             </div>
             <h1 className="mb-8 font-display text-6xl uppercase leading-[0.9] tracking-tighter md:text-8xl">
-              TOWING & ROADSIDE
+              CONCRETE FLATWORK
               <br />
-              <span className="text-primary">ASSISTANCE IN UTAH</span>
+              <span className="text-primary">IN UTAH</span>
             </h1>
-            <p className="mb-10 max-w-xl text-pretty text-xl leading-relaxed text-muted-foreground md:text-2xl">
-              Professional towing and emergency roadside assistance. We move
-              everything from stranded SUVs to entire commercial fleets — 24/7/365.
+            <p className="mb-10 max-w-2xl text-pretty text-xl leading-relaxed text-muted-foreground md:text-2xl">
+              {COMPANY_NAME} delivers durable driveways, patios, sidewalks, and
+              decorative finishes — plus concrete tearout and haul off when the old
+              slab has to go.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -151,7 +168,7 @@ export function HomePage(): JSX.Element {
                 className="flex items-center gap-3 bg-primary px-8 py-4 font-display text-xl uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-0.5"
               >
                 <Phone className="size-5" strokeWidth={2.5} />
-                Request Dispatch
+                Get a Quote
               </a>
               <NavLink
                 href="/services"
@@ -161,7 +178,7 @@ export function HomePage(): JSX.Element {
               </NavLink>
             </div>
             <p className="mt-6 font-mono text-xs uppercase tracking-widest text-primary">
-              Call anytime: {PHONE_DISPLAY} •{" "}
+              {PHONE_DISPLAY} •{" "}
               <a href={EMAIL_HREF} className="underline underline-offset-4">
                 {EMAIL_DISPLAY}
               </a>
@@ -170,14 +187,13 @@ export function HomePage(): JSX.Element {
         </div>
       </section>
 
-      {/* Trust strip */}
       <section className="border-y border-border bg-card/40">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-border lg:grid-cols-4">
           {[
-            { label: "Availability", value: "24 / 7 / 365" },
-            { label: "Avg Response", value: "15-30 MIN" },
-            { label: "Compliance", value: "LICENSED & INSURED" },
-            { label: "Service Area", value: "UT + SL COUNTIES" },
+            { label: "Specialty", value: "TEAROUT & HAUL" },
+            { label: "Focus", value: "FLATWORK" },
+            { label: "Counties", value: "UT · SL · DAVIS" },
+            { label: "Finishes", value: "BROOM & DECORATIVE" },
           ].map((stat) => (
             <div key={stat.label} className="bg-background px-6 py-8">
               <div className="font-mono text-[10px] uppercase tracking-widest text-primary">
@@ -191,48 +207,56 @@ export function HomePage(): JSX.Element {
         </div>
       </section>
 
-      {/* Services grid */}
+      <section className="border-b border-border py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <p className="max-w-4xl text-base leading-relaxed text-muted-foreground">
+            {COMPANY_DESCRIPTION}
+          </p>
+        </div>
+      </section>
+
       <section className="bg-card/30 py-24">
         <div className="mx-auto max-w-7xl px-4">
           <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
               <h2 className="font-display text-5xl uppercase tracking-tight">
-                Core Capabilities
+                Core Services
               </h2>
               <p className="mt-2 font-mono text-sm text-primary">
-                // FULL-SPECTRUM ROADSIDE SOLUTIONS
+                // FLATWORK · TEAROUT · DECORATIVE
               </p>
-            </div>
-            <div className="hidden text-right md:block">
-              <span className="font-display text-6xl opacity-10">01-04</span>
             </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {services.map((s) => (
-              <div
-                key={s.id}
-                className="group flex h-[420px] flex-col border border-border bg-background p-8 transition-colors hover:border-primary/50"
-              >
-                <span className="mb-auto font-mono text-xs text-muted-foreground">
-                  [ SERVICE.{s.id} ]
-                </span>
-                <h3 className="mb-4 mt-4 font-display text-3xl uppercase">
-                  {s.title}
-                </h3>
-                <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-                  {s.blurb}
-                </p>
-                <img
-                  src={s.image}
-                  alt={s.title}
-                  width={800}
-                  height={608}
-                  loading="lazy"
-                  className="aspect-video w-full object-cover"
-                />
-              </div>
-            ))}
+            {featuredServices.map((s) => {
+              const image = getServiceHeroImage(s.slug);
+              return (
+                <div
+                  key={s.id}
+                  className="group flex flex-col overflow-hidden border border-border bg-background transition-colors hover:border-primary/50"
+                >
+                  {image ? (
+                    <ClickableImage
+                      image={image}
+                      className="aspect-[4/3] w-full object-cover transition-opacity group-hover:opacity-90"
+                    />
+                  ) : null}
+                  <NavLink href={s.href} className="flex flex-1 flex-col p-8">
+                    <span className="font-mono text-xs text-muted-foreground">
+                      [ SERVICE.{s.id} ]
+                    </span>
+                    <h3 className="mb-4 mt-4 font-display text-3xl uppercase transition-colors group-hover:text-primary">
+                      {s.title}
+                    </h3>
+                    <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
+                      {s.blurb}
+                    </p>
+                    <span className="mt-6 font-mono text-xs text-primary">Learn more →</span>
+                  </NavLink>
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-12 text-center">
@@ -246,12 +270,11 @@ export function HomePage(): JSX.Element {
         </div>
       </section>
 
-      {/* Coverage / Why us */}
       <section className="py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-4 lg:grid-cols-2">
           <div>
             <h2 className="mb-8 font-display text-5xl uppercase leading-none">
-              WE DOMINATE THE
+              SERVING THE
               <br />
               <span className="text-primary">WASATCH FRONT</span>
             </h2>
@@ -262,7 +285,7 @@ export function HomePage(): JSX.Element {
                     {String(i + 1).padStart(2, "0")}
                   </div>
                   <div>
-                    <h3 className="flex items-center gap-2 font-bold text-lg uppercase">
+                    <h3 className="flex items-center gap-2 text-lg font-bold uppercase">
                       <p.icon className="size-4 text-primary" />
                       {p.title}
                     </h3>
@@ -273,39 +296,63 @@ export function HomePage(): JSX.Element {
             </div>
           </div>
 
-          <div className="relative aspect-square border-2 border-border">
-            <img
-              src={coverageMap}
-              alt="Service area map of Salt Lake County and Utah County, Utah"
-              width={1024}
-              height={1024}
-              loading="lazy"
-              className="h-full w-full object-cover opacity-60"
-            />
-            <div className="absolute bottom-6 right-6 max-w-xs border border-primary bg-background p-6">
-              <div className="mb-2 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-primary">
-                <MapPin className="size-3" /> Primary Coverage
-              </div>
-              <ul className="space-y-1 text-sm font-bold uppercase">
-                <li>— Salt Lake City</li>
-                <li>— Provo / Orem</li>
-                <li>— Lehi / Silicon Slopes</li>
-                <li>— Sandy / Draper</li>
-                <li>— Spanish Fork</li>
-              </ul>
+          <div className="border-2 border-border p-8">
+            <div className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+              <MapPin className="size-3" /> Service areas
             </div>
+            <ul className="space-y-3">
+              {areaLinks.map((area) => (
+                <li key={area.href}>
+                  <NavLink
+                    href={area.href}
+                    className="font-display text-2xl uppercase transition-colors hover:text-primary"
+                  >
+                    {area.label} →
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+            <NavLink
+              href="/areas"
+              className="mt-8 inline-block font-mono text-xs uppercase text-primary"
+            >
+              View all service areas →
+            </NavLink>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
+      {homeGalleryPreview.length > 0 && (
+        <section className="border-y border-border py-24">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <h2 className="font-display text-5xl uppercase tracking-tight">
+                  Project Gallery
+                </h2>
+                <p className="mt-2 font-mono text-sm text-primary">
+                  // REAL WORK ACROSS UTAH
+                </p>
+              </div>
+              <NavLink
+                href="/gallery"
+                className="font-mono text-xs uppercase text-primary hover:underline"
+              >
+                View full gallery →
+              </NavLink>
+            </div>
+            <GalleryGrid images={homeGalleryPreview} columns="compact" />
+          </div>
+        </section>
+      )}
+
       <section className="border-y border-border bg-card/40 py-24">
         <div className="mx-auto max-w-7xl px-4">
           <h2 className="mb-2 font-display text-5xl uppercase tracking-tight">
-            Field Reports
+            Client Feedback
           </h2>
           <p className="mb-12 font-mono text-sm text-primary">
-            // FROM DRIVERS WE'VE PULLED OUT OF TIGHT SPOTS
+            // FROM HOMEOWNERS ACROSS THE VALLEY
           </p>
           <div className="grid gap-4 md:grid-cols-3">
             {testimonials.map((t) => (
@@ -314,13 +361,11 @@ export function HomePage(): JSX.Element {
                 className="flex h-full flex-col border border-border bg-background p-8"
               >
                 <blockquote className="flex-1 text-base leading-relaxed text-foreground">
-                  "{t.quote}"
+                  &ldquo;{t.quote}&rdquo;
                 </blockquote>
                 <figcaption className="mt-6 border-t border-border pt-4">
                   <div className="font-bold uppercase">{t.name}</div>
-                  <div className="font-mono text-xs text-muted-foreground">
-                    {t.role}
-                  </div>
+                  <div className="font-mono text-xs text-muted-foreground">{t.role}</div>
                 </figcaption>
               </figure>
             ))}
@@ -328,7 +373,6 @@ export function HomePage(): JSX.Element {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="py-24">
         <div className="mx-auto grid max-w-7xl gap-16 px-4 lg:grid-cols-3">
           <div>
@@ -338,7 +382,7 @@ export function HomePage(): JSX.Element {
               <span className="text-primary">Asked</span>
             </h2>
             <p className="mt-4 font-mono text-sm text-muted-foreground">
-              // OPERATIONAL CLARITY
+              // PROJECT BASICS
             </p>
           </div>
           <div className="lg:col-span-2">
@@ -358,6 +402,23 @@ export function HomePage(): JSX.Element {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-t border-border py-12">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="font-mono text-xs uppercase tracking-widest text-primary">
+            // All services
+          </div>
+          <ul className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {serviceLinks.map((link) => (
+              <li key={link.href}>
+                <NavLink href={link.href} className="text-sm uppercase hover:text-primary">
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

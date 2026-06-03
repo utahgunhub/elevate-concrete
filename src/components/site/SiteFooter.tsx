@@ -1,26 +1,44 @@
-import { EMAIL_DISPLAY, EMAIL_HREF, PHONE_DISPLAY, PHONE_HREF } from "./SiteHeader";
 import { NavLink } from "@/components/NavLink";
+import {
+  areaLinks,
+  COMPANY_NAME,
+  EMAIL_DISPLAY,
+  EMAIL_HREF,
+  LEGAL_NAME,
+  PHONE_DISPLAY,
+  PHONE_HREF,
+  serviceLinks,
+} from "@/lib/site";
+
+const footerLinkClass =
+  "text-neutral-400 transition-colors hover:text-primary";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-background py-16">
+    <footer className="border-t border-primary/25 bg-black py-16 text-neutral-300">
       <div className="mx-auto max-w-7xl px-4">
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="bg-primary px-2 py-0.5 inline-block font-display text-xl tracking-tight text-primary-foreground">
-              SERVICE TOWING UTAH
+            <div className="inline-block bg-primary px-2 py-0.5 font-display text-xl tracking-tight text-primary-foreground">
+              {COMPANY_NAME.toUpperCase()}
             </div>
-            <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-              Professional 24-hour towing and roadside assistance across Utah County
-              and Salt Lake County. Licensed, insured, and always on call.
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
+              {LEGAL_NAME}
+            </p>
+            <p className="mt-4 max-w-sm text-sm text-neutral-400">
+              Professional concrete flatwork, tearout, and haul off across Utah County,
+              Salt Lake County, and Davis County.
             </p>
             <a
               href={PHONE_HREF}
-              className="mt-6 inline-block font-display text-3xl text-primary"
+              className="mt-6 inline-block font-display text-3xl text-primary transition-colors hover:text-primary/90"
             >
               {PHONE_DISPLAY}
             </a>
-            <a href={EMAIL_HREF} className="mt-2 block text-sm text-muted-foreground hover:text-primary">
+            <a
+              href={EMAIL_HREF}
+              className={`mt-2 block text-sm ${footerLinkClass}`}
+            >
               {EMAIL_DISPLAY}
             </a>
           </div>
@@ -30,24 +48,16 @@ export function SiteFooter() {
               // Services
             </div>
             <ul className="mt-4 space-y-2 text-sm">
+              {serviceLinks.slice(0, 6).map((link) => (
+                <li key={link.href}>
+                  <NavLink href={link.href} className={footerLinkClass}>
+                    {link.label}
+                  </NavLink>
+                </li>
+              ))}
               <li>
-                <NavLink href="/services/accident-towing" className="hover:text-primary">
-                  Accident Towing & Recovery
-                </NavLink>
-              </li>
-              <li>
-                <NavLink href="/services/flatbed-towing" className="hover:text-primary">
-                  Flatbed Towing
-                </NavLink>
-              </li>
-              <li>
-                <NavLink href="/services/roadside-assistance" className="hover:text-primary">
-                  Roadside Assistance
-                </NavLink>
-              </li>
-              <li>
-                <NavLink href="/services/fleet-towing" className="hover:text-primary">
-                  Fleet Towing & Transport
+                <NavLink href="/services" className={footerLinkClass}>
+                  All services →
                 </NavLink>
               </li>
             </ul>
@@ -59,25 +69,42 @@ export function SiteFooter() {
             </div>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <NavLink href="/about" className="hover:text-primary">About</NavLink>
+                <NavLink href="/gallery" className={footerLinkClass}>
+                  Gallery
+                </NavLink>
               </li>
               <li>
-                <NavLink href="/fleet" className="hover:text-primary">We Buy Junk Cars</NavLink>
+                <NavLink href="/about" className={footerLinkClass}>
+                  About
+                </NavLink>
+              </li>
+              {areaLinks.map((link) => (
+                <li key={link.href}>
+                  <NavLink href={link.href} className={footerLinkClass}>
+                    {link.label}
+                  </NavLink>
+                </li>
+              ))}
+              <li>
+                <NavLink href="/areas" className={footerLinkClass}>
+                  All service areas
+                </NavLink>
               </li>
               <li>
-                <NavLink href="/coverage" className="hover:text-primary">Coverage Area</NavLink>
-              </li>
-              <li>
-                <NavLink href="/contact" className="hover:text-primary">Contact</NavLink>
+                <NavLink href="/contact" className={footerLinkClass}>
+                  Contact
+                </NavLink>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-xs text-muted-foreground md:flex-row md:items-center">
-          <span>© {new Date().getFullYear()} Service Towing Utah. Licensed & Insured.</span>
-          <span className="font-mono uppercase tracking-widest">
-            Available 24 / 7 / 365
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-primary/20 pt-8 text-xs text-neutral-500 md:flex-row md:items-center">
+          <span>
+            © {new Date().getFullYear()} {LEGAL_NAME} · {COMPANY_NAME}
+          </span>
+          <span className="font-mono uppercase tracking-widest text-neutral-400">
+            Utah · Salt Lake · Davis Counties
           </span>
         </div>
       </div>

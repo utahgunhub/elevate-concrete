@@ -1,23 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type JSX } from "react";
 import { AboutPage } from "./routes/about";
 import { ContactPage } from "./routes/contact";
-import { CoveragePage } from "./routes/coverage";
-import { FleetPage } from "./routes/fleet";
+import { AreasPage } from "./routes/areas";
+import { DavisCountyPage, SaltLakeCountyPage, UtahCountyPage } from "./routes/area-pages";
 import { HomePage } from "./routes/index";
-import { AccidentTowingPage } from "./routes/service-accident-towing";
-import { DeadBatteryPage } from "./routes/service-dead-battery";
-import { EmergencyTowingPage } from "./routes/service-emergency-towing";
-import { EngineProblemsPage } from "./routes/service-engine-problems";
-import { FlatTirePage } from "./routes/service-flat-tire";
-import { FlatbedTowingPage } from "./routes/service-flatbed-towing";
-import { FleetTowingPage } from "./routes/service-fleet-towing";
-import { FuelDeliveryPage } from "./routes/service-fuel-delivery";
-import { JumpStartsPage } from "./routes/service-jump-starts";
-import { LockoutsPage } from "./routes/service-lockouts";
-import { LongDistanceTowingPage } from "./routes/service-long-distance-towing";
-import { RoadsideAssistancePage } from "./routes/service-roadside-assistance";
-import { WinchOutsPage } from "./routes/service-winch-outs";
+import {
+  ConcreteTearoutPage,
+  DecorativeConcretePage,
+  DrivewaysPage,
+  FlatworkPage,
+  PatiosPage,
+  RvPadsPage,
+  SidewalksPage,
+  SmallFootingsFoundationsPage,
+  WalkwaysPage,
+} from "./routes/concrete-service-pages";
+import { GalleryPage } from "./routes/gallery";
 import { ServicesPage } from "./routes/services";
+import { COMPANY_NAME } from "./lib/site";
 
 type RouteConfig = {
   title: string;
@@ -27,110 +27,105 @@ type RouteConfig = {
 
 const routes: Record<string, RouteConfig> = {
   "/": {
-    title: "Service Towing Utah — 24/7 Towing & Roadside Assistance",
+    title: `${COMPANY_NAME} — Concrete Flatwork in Utah`,
     description:
-      "Professional 24-hour towing and roadside assistance across Utah County and Salt Lake County.",
+      "Professional concrete flatwork, tearout, and haul off across Utah County, Salt Lake County, and Davis County.",
     component: HomePage,
   },
   "/services": {
-    title: "Towing Services — Service Towing Utah",
+    title: `Concrete Services — ${COMPANY_NAME}`,
     description:
-      "Accident recovery, flatbed towing, roadside assistance, and fleet transport across Utah County and Salt Lake County.",
+      "Driveways, patios, sidewalks, RV pads, decorative concrete, tearout, haul off, and small footings across Utah.",
     component: ServicesPage,
   },
-  "/coverage": {
-    title: "Service Area — Utah & Salt Lake County | Service Towing Utah",
+  "/areas": {
+    title: `Service Areas — ${COMPANY_NAME}`,
     description:
-      "Coverage map and city list for Service Towing Utah across Utah County and Salt Lake County.",
-    component: CoveragePage,
-  },
-  "/fleet": {
-    title: "We Buy Junk Cars — Service Towing Utah",
-    description:
-      "Cash for junk cars in Utah with quick quotes, free pickup, and fast payment.",
-    component: FleetPage,
+      "Concrete services in Utah County, Salt Lake County, and Davis County.",
+    component: AreasPage,
   },
   "/about": {
-    title: "About — Service Towing Utah",
+    title: `About — ${COMPANY_NAME}`,
     description:
-      "Utah-owned and operated. Licensed, insured, and built around a single idea: when you call, we go.",
+      "Utah concrete flatwork company focused on durable finishes, tearout, and reliable scheduling.",
     component: AboutPage,
   },
   "/contact": {
-    title: "Contact Dispatch — Service Towing Utah",
+    title: `Contact — ${COMPANY_NAME}`,
     description:
-      "Call (801) 900-3869 for 24/7 dispatch, or email Info@servicetowingutah.com for non-urgent requests.",
+      "Call (801) 599-9951 or email for concrete flatwork estimates in Utah County, Salt Lake County, and Davis County.",
     component: ContactPage,
   },
-  "/services/accident-towing": {
-    title: "Accident Towing & Recovery — Service Towing Utah",
-    description: "Professional accident towing and recovery in Utah County and Salt Lake County. Available 24/7.",
-    component: AccidentTowingPage,
+  "/gallery": {
+    title: `Project Gallery — ${COMPANY_NAME}`,
+    description:
+      "Photos of concrete flatwork, tearout, driveways, patios, and decorative projects across Utah.",
+    component: GalleryPage,
   },
-  "/services/flatbed-towing": {
-    title: "Flatbed Towing — Service Towing Utah",
-    description: "Safe flatbed towing for any vehicle across Utah County and Salt Lake County. EV, AWD, and luxury-capable.",
-    component: FlatbedTowingPage,
+  "/services/concrete-tearout": {
+    title: `Concrete Tearout & Haul Off — ${COMPANY_NAME}`,
+    description: "Concrete removal and haul off in Utah. Prep your site for new flatwork.",
+    component: ConcreteTearoutPage,
   },
-  "/services/emergency-towing": {
-    title: "Emergency Towing — Service Towing Utah",
-    description: "24-hour emergency towing anywhere in Utah County and Salt Lake County. Fast dispatch, call now.",
-    component: EmergencyTowingPage,
+  "/services/flatwork": {
+    title: `Concrete Flatwork — ${COMPANY_NAME}`,
+    description: "Professional concrete flatwork for residential and commercial projects in Utah.",
+    component: FlatworkPage,
   },
-  "/services/roadside-assistance": {
-    title: "Roadside Assistance — Service Towing Utah",
-    description: "24-hour roadside assistance in Utah including jump starts, lockouts, fuel delivery, and flat tire help.",
-    component: RoadsideAssistancePage,
+  "/services/driveways": {
+    title: `Concrete Driveways — ${COMPANY_NAME}`,
+    description: "New and replacement concrete driveways in Utah County, Salt Lake, and Davis County.",
+    component: DrivewaysPage,
   },
-  "/services/jump-starts": {
-    title: "Jump Starts — Service Towing Utah",
-    description: "Dead battery? We come to you and jump start your vehicle anywhere in Utah County and Salt Lake County.",
-    component: JumpStartsPage,
+  "/services/patios": {
+    title: `Concrete Patios — ${COMPANY_NAME}`,
+    description: "Backyard and outdoor concrete patios with quality finishes in Utah.",
+    component: PatiosPage,
   },
-  "/services/lockouts": {
-    title: "Car Lockout Service — Service Towing Utah",
-    description: "Locked out of your car in Utah? We provide fast, damage-free lockout service 24 hours a day.",
-    component: LockoutsPage,
+  "/services/rv-pads": {
+    title: `Concrete RV Pads — ${COMPANY_NAME}`,
+    description: "Durable RV, trailer, and equipment pads across the Wasatch Front.",
+    component: RvPadsPage,
   },
-  "/services/fuel-delivery": {
-    title: "Fuel Delivery — Service Towing Utah",
-    description: "Out of gas in Utah? We deliver gasoline or diesel to your location anywhere in Utah County or Salt Lake County.",
-    component: FuelDeliveryPage,
+  "/services/walkways": {
+    title: `Concrete Walkways — ${COMPANY_NAME}`,
+    description: "Front and side yard concrete walkways in Utah.",
+    component: WalkwaysPage,
   },
-  "/services/winch-outs": {
-    title: "Winch-Outs & Recovery — Service Towing Utah",
-    description: "Vehicle stuck off-road, in a ditch, or in snow? We provide winch-out and recovery service across Utah.",
-    component: WinchOutsPage,
+  "/services/sidewalks": {
+    title: `Concrete Sidewalks — ${COMPANY_NAME}`,
+    description: "Sidewalk replacement and new pours for homes and light commercial in Utah.",
+    component: SidewalksPage,
   },
-  "/services/fleet-towing": {
-    title: "Fleet Towing & Vehicle Transport — Service Towing Utah",
-    description: "Reliable fleet towing and vehicle transport for businesses across Utah County and Salt Lake County.",
-    component: FleetTowingPage,
+  "/services/decorative-concrete": {
+    title: `Decorative Concrete — ${COMPANY_NAME}`,
+    description: "Stamped, stained, and accent decorative concrete in Utah.",
+    component: DecorativeConcretePage,
   },
-  "/services/long-distance-towing": {
-    title: "Long-Distance Towing — Service Towing Utah",
-    description: "Long-distance towing across Utah and neighboring states. Flatbed transport, competitive rates.",
-    component: LongDistanceTowingPage,
+  "/services/small-footings-foundations": {
+    title: `Small Footings & Foundations — ${COMPANY_NAME}`,
+    description: "Footings for sheds, shops, and small structures — not full basement foundations.",
+    component: SmallFootingsFoundationsPage,
   },
-  "/services/dead-battery": {
-    title: "Dead Battery Service — Service Towing Utah",
-    description: "Won't start? We respond to dead battery calls 24 hours across Utah County and Salt Lake County.",
-    component: DeadBatteryPage,
+  "/areas/utah-county": {
+    title: `Utah County Concrete — ${COMPANY_NAME}`,
+    description: "Concrete flatwork and tearout in Utah County cities including Provo, Orem, and Lehi.",
+    component: UtahCountyPage,
   },
-  "/services/flat-tire": {
-    title: "Flat Tire & Tire Change — Service Towing Utah",
-    description: "Flat tire in Utah? We change your spare or tow you to a tire shop. Available 24/7.",
-    component: FlatTirePage,
+  "/areas/salt-lake-county": {
+    title: `Salt Lake County Concrete — ${COMPANY_NAME}`,
+    description: "Concrete services in Salt Lake County including Sandy, Draper, and West Valley.",
+    component: SaltLakeCountyPage,
   },
-  "/services/engine-problems": {
-    title: "Engine Problems & Breakdown Towing — Service Towing Utah",
-    description: "Engine warning, overheating, or stalled? Don't keep driving. Call us for breakdown towing in Utah.",
-    component: EngineProblemsPage,
+  "/areas/davis-county": {
+    title: `Davis County Concrete — ${COMPANY_NAME}`,
+    description: "Concrete flatwork in Davis County including Bountiful, Layton, and Farmington.",
+    component: DavisCountyPage,
   },
 };
 
 const notFound: RouteConfig = {
-  title: "Page Not Found — Service Towing Utah",
+  title: `Page Not Found — ${COMPANY_NAME}`,
   description: "The page you're looking for doesn't exist.",
   component: () => (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">

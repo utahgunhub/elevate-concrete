@@ -3,13 +3,16 @@ import { useState } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { PageHero } from "@/components/site/PageHero";
 import {
+  COMPANY_NAME,
   EMAIL_DISPLAY,
   EMAIL_HREF,
+  LEGAL_NAME,
   PHONE_DISPLAY,
   PHONE_HREF,
-} from "@/components/site/SiteHeader";
-import { Phone, Mail, Clock, MapPin } from "lucide-react";
-import contactHero from "@/assets/contact-hero.png";
+  SERVICE_COUNTIES,
+  serviceLinks,
+} from "@/lib/site";
+import { Phone, Mail, MapPin } from "lucide-react";
 
 export function ContactPage(): JSX.Element {
   const [submitted, setSubmitted] = useState(false);
@@ -17,25 +20,22 @@ export function ContactPage(): JSX.Element {
   return (
     <SiteLayout>
       <PageHero
-        tag="Dispatch"
+        tag="Contact"
         title="GET A"
-        highlight="UNIT ROLLING."
-        description="For active emergencies, always call. For quotes, scheduled transport, or fleet inquiries, drop us a note."
-        imageSrc={contactHero}
-        imageAlt="Tow truck arriving for roadside help in a Utah neighborhood"
+        highlight="FREE ESTIMATE"
+        description={`Call ${PHONE_DISPLAY} or send project details for concrete flatwork, tearout, or decorative work in Utah.`}
       />
 
       <section className="py-20">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 lg:grid-cols-5">
-          {/* Contact info */}
           <div className="space-y-6 lg:col-span-2">
             <a
               href={PHONE_HREF}
-              className="block border-2 border-urgent bg-urgent/10 p-8 transition-colors hover:bg-urgent/20"
+              className="block border-2 border-primary bg-primary/10 p-8 transition-colors hover:bg-primary/20"
             >
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-urgent">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-primary">
                 <Phone className="size-3" strokeWidth={2.5} />
-                24/7 Emergency Dispatch
+                Call for estimates
               </div>
               <div className="mt-3 font-display text-4xl text-foreground md:text-5xl">
                 {PHONE_DISPLAY}
@@ -48,14 +48,19 @@ export function ContactPage(): JSX.Element {
             <div className="space-y-4">
               {[
                 {
-                  icon: Clock,
-                  label: "Hours",
-                  value: "24 hours · 7 days · 365 days",
+                  icon: MapPin,
+                  label: "Business name",
+                  value: LEGAL_NAME,
                 },
                 {
                   icon: MapPin,
-                  label: "Service Area",
-                  value: "Utah County · Salt Lake County",
+                  label: "Brand",
+                  value: COMPANY_NAME,
+                },
+                {
+                  icon: MapPin,
+                  label: "Service areas",
+                  value: SERVICE_COUNTIES.join(" · "),
                 },
                 {
                   icon: Mail,
@@ -87,18 +92,15 @@ export function ContactPage(): JSX.Element {
             </div>
           </div>
 
-          {/* Form */}
           <div className="lg:col-span-3">
             <div className="border border-border bg-card/40 p-8 md:p-10">
               <div className="font-mono text-xs uppercase tracking-widest text-primary">
-                // Non-urgent request form
+                // Project inquiry
               </div>
-              <h2 className="mt-2 font-display text-3xl uppercase">
-                Request a Quote
-              </h2>
+              <h2 className="mt-2 font-display text-3xl uppercase">Request a Quote</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                For active emergencies, call dispatch. For scheduled transport,
-                fleet accounts, or quote requests, use the form below.
+                Include your address, approximate square footage, and whether you need
+                tearout. For faster quotes, call {PHONE_DISPLAY}.
               </p>
 
               {submitted ? (
@@ -107,8 +109,7 @@ export function ContactPage(): JSX.Element {
                     Request received.
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    A dispatcher will respond within 1 business hour. For
-                    immediate help, call {PHONE_DISPLAY}.
+                    We will follow up soon. For immediate questions, call {PHONE_DISPLAY}.
                   </p>
                 </div>
               ) : (
@@ -120,40 +121,38 @@ export function ContactPage(): JSX.Element {
                   className="mt-8 space-y-5"
                 >
                   <FormField label="Name" name="name" required />
-                  <FormField
-                    label="Phone"
-                    name="phone"
-                    type="tel"
-                    required
-                  />
+                  <FormField label="Phone" name="phone" type="tel" required />
                   <FormField label="Email" name="email" type="email" />
                   <FormField
-                    label="Vehicle Location"
+                    label="Project address / city"
                     name="location"
-                    placeholder="e.g. I-15 Exit 272"
+                    placeholder="e.g. Lehi, UT"
+                    required
                   />
                   <div>
                     <label className="block font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Service Type
+                      Service type
                     </label>
                     <select
                       name="service"
                       className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none"
                     >
-                      <option>Accident Recovery</option>
-                      <option>Flatbed Towing</option>
-                      <option>Roadside Assistance</option>
-                      <option>Fleet / Scheduled Transport</option>
-                      <option>Other</option>
+                      {serviceLinks.map((link) => (
+                        <option key={link.href} value={link.label}>
+                          {link.label}
+                        </option>
+                      ))}
+                      <option>Other / not sure</option>
                     </select>
                   </div>
                   <div>
                     <label className="block font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Details
+                      Project details
                     </label>
                     <textarea
                       name="details"
                       rows={4}
+                      placeholder="Size, tearout needed, finish preference, timeline..."
                       className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none"
                     />
                   </div>

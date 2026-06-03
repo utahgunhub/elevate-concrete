@@ -7,6 +7,7 @@ export function PageHero({
   description,
   imageSrc,
   imageAlt = "",
+  action,
 }: {
   tag: string;
   title: string;
@@ -14,9 +15,10 @@ export function PageHero({
   description: ReactNode;
   imageSrc?: string;
   imageAlt?: string;
+  action?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-border px-4 pt-20 pb-24">
+    <section className="relative min-h-[22rem] overflow-hidden border-b border-border px-4 pt-20 pb-24 md:min-h-[26rem]">
       {imageSrc ? (
         <div className="absolute inset-0 z-0">
           <img
@@ -24,7 +26,7 @@ export function PageHero({
             alt={imageAlt}
             width={1920}
             height={1088}
-            className="h-full w-full object-cover opacity-40"
+            className="size-full object-cover object-center opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40" />
         </div>
@@ -48,6 +50,7 @@ export function PageHero({
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
           {description}
         </p>
+        {action ? <div className="mt-8">{action}</div> : null}
       </div>
     </section>
   );
