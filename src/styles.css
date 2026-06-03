@@ -1,0 +1,88 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-urgent: var(--urgent);
+  --color-urgent-foreground: var(--urgent-foreground);
+  --font-display: "Anton", sans-serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+:root {
+  --radius: 0;
+  /* #0F1115 */
+  --background: oklch(0.18 0.012 260);
+  /* #F8FAFC */
+  --foreground: oklch(0.985 0.003 247);
+  --card: oklch(0.22 0.012 260);
+  --card-foreground: oklch(0.985 0.003 247);
+  --popover: oklch(0.22 0.012 260);
+  --popover-foreground: oklch(0.985 0.003 247);
+  /* #FACC15 high-vis yellow */
+  --primary: oklch(0.85 0.18 95);
+  --primary-foreground: oklch(0.15 0 0);
+  --secondary: oklch(0.25 0.012 260);
+  --secondary-foreground: oklch(0.985 0.003 247);
+  --muted: oklch(0.25 0.012 260);
+  /* #94A3B8 */
+  --muted-foreground: oklch(0.70 0.025 250);
+  --accent: oklch(0.25 0.012 260);
+  --accent-foreground: oklch(0.985 0.003 247);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.985 0.003 247);
+  /* #1F2937 */
+  --border: oklch(0.30 0.018 255);
+  --input: oklch(0.30 0.018 255);
+  --ring: oklch(0.85 0.18 95);
+  /* #EA580C emergency orange */
+  --urgent: oklch(0.65 0.20 42);
+  --urgent-foreground: oklch(0.985 0.003 247);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-entrance {
+  animation: slideUp 600ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
