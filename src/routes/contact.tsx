@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import type { JSX, FormEvent } from "react";
 import { useState } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { PageHero } from "@/components/site/PageHero";
@@ -12,10 +12,36 @@ import {
   SERVICE_COUNTIES,
   serviceLinks,
 } from "@/lib/site";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { sendContactForm } from "@/lib/emailjs";
+import { Phone, Mail, MapPin, Loader2 } from "lucide-react";
+
+type FormStatus = "idle" | "submitting" | "success" | "error";
 
 export function ContactPage(): JSX.Element {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
+    e.preventDefault();
+    setStatus("submitting");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      await sendContactForm({
+        name: String(formData.get("name") ?? ""),
+        phone: String(formData.get("phone") ?? ""),
+        email: String(formData.get("email") ?? ""),
+        location: String(formData.get("location") ?? ""),
+        service: String(formData.get("service") ?? ""),
+        details: String(formData.get("details") ?? ""),
+      });
+      setStatus("success");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
+  }
 
   return (
     <SiteLayout>
@@ -103,7 +129,7 @@ export function ContactPage(): JSX.Element {
                 tearout. For faster quotes, call {PHONE_DISPLAY}.
               </p>
 
-              {submitted ? (
+              {status === "success" ? (
                 <div className="mt-8 border-2 border-primary bg-primary/10 p-6">
                   <div className="font-display text-2xl uppercase text-primary">
                     Request received.
@@ -113,21 +139,23 @@ export function ContactPage(): JSX.Element {
                   </p>
                 </div>
               ) : (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSubmitted(true);
-                  }}
-                  className="mt-8 space-y-5"
-                >
-                  <FormField label="Name" name="name" required />
-                  <FormField label="Phone" name="phone" type="tel" required />
-                  <FormField label="Email" name="email" type="email" />
+                <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                  {status === "error" ? (
+                    <div className="border border-destructive bg-destructive/10 p-4 text-sm text-destructive">
+                      Something went wrong sending your request. Please call{" "}
+                      {PHONE_DISPLAY} or try again.
+                    </div>
+                  ) : null}
+
+                  <FormField label="Name" name="name" required disabled={status === "submitting"} />
+                  <FormField label="Phone" name="phone" type="tel" required disabled={status === "submitting"} />
+                  <FormField label="Email" name="email" type="email" disabled={status === "submitting"} />
                   <FormField
                     label="Project address / city"
                     name="location"
                     placeholder="e.g. Lehi, UT"
                     required
+                    disabled={status === "submitting"}
                   />
                   <div>
                     <label className="block font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -135,7 +163,8 @@ export function ContactPage(): JSX.Element {
                     </label>
                     <select
                       name="service"
-                      className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none"
+                      disabled={status === "submitting"}
+                      className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none disabled:opacity-60"
                     >
                       {serviceLinks.map((link) => (
                         <option key={link.href} value={link.label}>
@@ -152,15 +181,24 @@ export function ContactPage(): JSX.Element {
                     <textarea
                       name="details"
                       rows={4}
+                      disabled={status === "submitting"}
                       placeholder="Size, tearout needed, finish preference, timeline..."
-                      className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none"
+                      className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none disabled:opacity-60"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-primary py-4 font-display text-lg uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-0.5"
+                    disabled={status === "submitting"}
+                    className="flex w-full items-center justify-center gap-2 bg-primary py-4 font-display text-lg uppercase tracking-wider text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
                   >
-                    Send Request
+                    {status === "submitting" ? (
+                      <>
+                        <Loader2 className="size-5 animate-spin" />
+                        Sending…
+                      </>
+                    ) : (
+                      "Send Request"
+                    )}
                   </button>
                 </form>
               )}
@@ -178,12 +216,14 @@ function FormField({
   type = "text",
   required,
   placeholder,
+  disabled,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   placeholder?: string;
+  disabled?: boolean;
 }) {
   return (
     <div>
@@ -200,7 +240,8 @@ function FormField({
         type={type}
         required={required}
         placeholder={placeholder}
-        className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none"
+        disabled={disabled}
+        className="mt-2 w-full border border-border bg-background px-3 py-3 text-sm focus:border-primary focus:outline-none disabled:opacity-60"
       />
     </div>
   );
