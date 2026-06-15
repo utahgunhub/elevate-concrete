@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type JSX } from "react";
 import { AboutPage } from "./routes/about";
 import { ContactPage } from "./routes/contact";
+import { ReviewPage } from "./routes/review";
 import { AreasPage } from "./routes/areas";
 import { DavisCountyPage, SaltLakeCountyPage, UtahCountyPage } from "./routes/area-pages";
 import { HomePage } from "./routes/index";
@@ -55,6 +56,12 @@ const routes: Record<string, RouteConfig> = {
     description:
       "Call (801) 599-9951 or email for concrete flatwork estimates in Utah County, Salt Lake County, and Davis County.",
     component: ContactPage,
+  },
+  "/review": {
+    title: `Leave a Review — ${COMPANY_NAME}`,
+    description:
+      "Rate your Elevate Concrete experience. Share feedback or leave a Google review for our Utah flatwork team.",
+    component: ReviewPage,
   },
   "/gallery": {
     title: `Project Gallery — ${COMPANY_NAME}`,
