@@ -103,8 +103,16 @@ export function SiteFooter() {
           <span>
             © {new Date().getFullYear()} {LEGAL_NAME} · {COMPANY_NAME}
           </span>
-          <span className="font-mono uppercase tracking-widest text-neutral-400">
-            Utah · Salt Lake · Davis Counties
+          <span>
+            Website created by{" "}
+            <a
+              href="https://www.zensitemedia.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 transition-colors hover:text-primary"
+            >
+              Zensite Media
+            </a>
           </span>
         </div>
       </div>
